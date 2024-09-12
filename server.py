@@ -2,9 +2,9 @@ from flask import Flask, jsonify, request
 import razorpay
 from dotenv import load_dotenv
 import os
-import nemo.collections.asr as nemo_asr
+# import nemo.collections.asr as nemo_asr
 
-speaker_model = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained("nvidia/speakerverification_en_titanet_large")
+# speaker_model = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained("nvidia/speakerverification_en_titanet_large")
 
 
 load_dotenv()
@@ -21,13 +21,13 @@ def index():
 def members():
     return jsonify({"name": "John"})
 
-@app.route('/audio/embbed')
-def audio():
-    emb = speaker_model.get_embedding("./output_audio.wav")
+# @app.route('/audio/embbed')
+# def audio():
+#     emb = speaker_model.get_embedding("./output_audio.wav")
 
-@app.route('/audiocheck')
-def audiocheck():
-    speaker_model.verify_speakers("./output_audio.wav","./output_audio20240818131440.wav")
+# @app.route('/audiocheck')
+# def audiocheck():
+#     speaker_model.verify_speakers("./output_audio.wav","./output_audio20240818131440.wav")
 
 @app.route('/deposit/<int:n>', methods=['POST'])
 def deposit(n):
