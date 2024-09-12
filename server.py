@@ -13,6 +13,10 @@ app = Flask(__name__)
 rzp_key = os.getenv('RAZORPAY_KEY')
 secret_key = os.getenv('RAZORPAY_SECRET_KEY')
 
+@app.route('/')
+def index():
+    return "Hello, World!"
+
 @app.route('/members')
 def members():
     return jsonify({"name": "John"})
