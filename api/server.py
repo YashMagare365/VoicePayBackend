@@ -15,6 +15,7 @@ secret_key = os.getenv('RAZORPAY_SECRET_KEY')
 
 @app.route('/')
 def index():
+    print('hello world')
     return "Hello, World!"
 
 @app.route('/members')
