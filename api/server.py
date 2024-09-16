@@ -2,12 +2,11 @@ from flask import Flask, jsonify, request
 import razorpay
 from dotenv import load_dotenv
 import os
+from pyannote.audio import Inference
+from scipy.spatial.distance import cdist
 
-# Uncomment the following line if using nemo_toolkit
-import nemo.collections.asr as nemo_asr
-
-# Uncomment the following lines if you need speaker recognition
-speaker_model = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained("nvidia/speakerverification_en_titanet_large")
+# Load the model and create embeddings
+inference = Inference("model_path_or_id", window="whole")
 
 load_dotenv()
 app = Flask(__name__)
@@ -28,11 +27,31 @@ def members():
 # Uncomment the following route handlers if using nemo_toolkit
 @app.route('/audio/embbed')
 def audio():
-    emb = speaker_model.get_embedding("./output_audio.wav")
+    embedding1 = inference("/content/output2.wav")
+    embedding2 = inference("/content/output3.wav")
 
+    # Ensure embeddings are 2D (reshaped if necessary)
+    embedding1 = embedding1.reshape(1, -1)  # Reshape to (1, D)
+    embedding2 = embedding2.reshape(1, -1)  # Reshape to (1, D)
+
+    # Calculate cosine distance between the two embeddings
+    distance = cdist(embedding1, embedding2, metric="cosine")[0, 0]
+
+    print(f"Cosine distance between the embeddings: {distance}")
+        
 @app.route('/audiocheck')
 def audiocheck():
-    speaker_model.verify_speakers("./output_audio.wav","./output_audio20240818131440.wav")
+    embedding1 = inference("/content/output2.wav")
+    embedding2 = inference("/content/output3.wav")
+
+    # Ensure embeddings are 2D (reshaped if necessary)
+    embedding1 = embedding1.reshape(1, -1)  # Reshape to (1, D)
+    embedding2 = embedding2.reshape(1, -1)  # Reshape to (1, D)
+
+    # Calculate cosine distance between the two embeddings
+    distance = cdist(embedding1, embedding2, metric="cosine")[0, 0]
+
+    print(f"Cosine distance between the embeddings: {distance}")
 
 @app.route('/deposit/<int:n>', methods=['POST'])
 def deposit(n):
