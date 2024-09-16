@@ -4,10 +4,10 @@ from dotenv import load_dotenv
 import os
 
 # Uncomment the following line if using nemo_toolkit
-# import nemo.collections.asr as nemo_asr
+import nemo.collections.asr as nemo_asr
 
 # Uncomment the following lines if you need speaker recognition
-# speaker_model = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained("nvidia/speakerverification_en_titanet_large")
+speaker_model = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained("nvidia/speakerverification_en_titanet_large")
 
 load_dotenv()
 app = Flask(__name__)
@@ -26,13 +26,13 @@ def members():
     return jsonify({"name": "John"})
 
 # Uncomment the following route handlers if using nemo_toolkit
-# @app.route('/audio/embbed')
-# def audio():
-#     emb = speaker_model.get_embedding("./output_audio.wav")
+@app.route('/audio/embbed')
+def audio():
+    emb = speaker_model.get_embedding("./output_audio.wav")
 
-# @app.route('/audiocheck')
-# def audiocheck():
-#     speaker_model.verify_speakers("./output_audio.wav","./output_audio20240818131440.wav")
+@app.route('/audiocheck')
+def audiocheck():
+    speaker_model.verify_speakers("./output_audio.wav","./output_audio20240818131440.wav")
 
 @app.route('/deposit/<int:n>', methods=['POST'])
 def deposit(n):
