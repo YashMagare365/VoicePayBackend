@@ -41,10 +41,10 @@ def audio():
     print(f"Cosine distance between the embeddings: {distance}")
 
      
-@app.route('/audiocheck')
-def audiocheck():
-    embedding1 = inference("../../demoaudio/output2.wav")
-    embedding2 = inference("../../demoaudio/output3.wav")
+@app.route('/audiocheck/<string:s>',methods=['POST'])
+def audiocheck(s):
+    embedding1 = inference(s)
+    embedding2 = inference(s)
 
     # Ensure embeddings are 2D (reshaped if necessary)
     embedding1 = embedding1.reshape(1, -1)  # Reshape to (1, D)
@@ -63,7 +63,7 @@ def deposit(n):
     try:
         client = razorpay.Client(auth=(rzp_key, secret_key))
         order = client.order.create({
-            "amount": n * 100,  # Amount should be in paise (integer)
+            "amount": n * 10,  # Amount should be in paise (integer)
             "currency": "INR",
             "receipt": "receipt#1",
             "partial_payment": False,
