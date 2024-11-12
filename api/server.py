@@ -63,7 +63,7 @@ def deposit(n):
     try:
         client = razorpay.Client(auth=(rzp_key, secret_key))
         order = client.order.create({
-            "amount": n * 10,  # Amount should be in paise (integer)
+            "amount": n * 100,  # Amount should be in paise (integer)
             "currency": "INR",
             "receipt": "receipt#1",
             "partial_payment": False,
